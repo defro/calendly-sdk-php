@@ -19,8 +19,10 @@ class Webhook
      *
      * @param string $url The URL where you want to receive POST requests for events you are subscribed to.
      * @param array $events List of user events to subscribe to (invitee.created, invitee.canceled).
-     * @param string $uuid User or Organization uuid
+     * @param string $uuid The unique reference to the user that the webhook will be tied to.
+     * @param string $organization_id The unique reference to the organization that the webhook will be tied to.
      * @param ?string $webhook_signing_key Optional secret key shared between your application and Calendly
+     * @param string $scope Indicates if the webhook subscription scope will be "organization" or "user". Default is "user".
      * @return BaseModel|null
      * @throws ApiErrorException
      * @throws InvalidArgumentException
@@ -33,14 +35,12 @@ class Webhook
         ?string $webhook_signing_key = null,
         string $scope = self::SCOPE_USER
     ): ?BaseModel {
-        //$scope = strpos($uuid, "organization") !== false ? self::SCOPE_ORGANIZATION : self::SCOPE_USER;
         $options = [
-            "url"    => $url,
-            "events" => $events,
-            "scope"  => $scope,
-            //$scope   => $uuid,
-            "organization" => $organization_id,
-            "user" => $uuid,
+            "url"           => $url,
+            "events"        => $events,
+            "scope"         => $scope,
+            "organization"  => $organization_id,
+            "user"          => $uuid,
         ];
 
         if (!empty($webhook_signing_key)) {
