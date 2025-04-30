@@ -25,13 +25,22 @@ class Webhook
      * @throws ApiErrorException
      * @throws InvalidArgumentException
      */
-    public static function subscribe(string $url, array $events, string $uuid, ?string $webhook_signing_key = null): ?BaseModel {
-        $scope = strpos($uuid, "organization") !== false ? self::SCOPE_ORGANIZATION : self::SCOPE_USER;
+    public static function subscribe(
+        string $url,
+        array $events,
+        string $uuid,
+        string $organization_id,
+        ?string $webhook_signing_key = null,
+        string $scope = self::SCOPE_USER
+    ): ?BaseModel {
+        //$scope = strpos($uuid, "organization") !== false ? self::SCOPE_ORGANIZATION : self::SCOPE_USER;
         $options = [
             "url"    => $url,
             "events" => $events,
             "scope"  => $scope,
-            $scope   => $uuid,
+            //$scope   => $uuid,
+            "organization" => $organization_id,
+            "user" => $uuid,
         ];
 
         if (!empty($webhook_signing_key)) {
